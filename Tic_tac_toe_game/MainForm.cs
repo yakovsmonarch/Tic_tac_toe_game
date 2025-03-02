@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
 using TicTacToeLib;
+using Tic_tac_toe_game.Model;
 
 namespace Tic_tac_toe_game
 {
@@ -13,35 +14,50 @@ namespace Tic_tac_toe_game
             InitializeComponent();
         }
 
-        #region Переменные
-        Graphics gr;
-        Bitmap bmap;
-        int[,] Matrix = new int[3, 3];
+        #region Поля
 
-        bool flagfigure = false;
-        bool flagmove = true; // false - ходит робот, true - человек
-        struct Alternative
-        {
-            public int appraisal;
-            public int[,] map;
-        }
-        List<Alternative> Alternativs = new List<Alternative>();
-        bool flag_clipping = false;
+        private Graphics _graphics;
+
+        private Bitmap _bmap;
+
+        /// <summary>
+        /// Массив содержащий позицию.
+        /// </summary>
+        private int[,] _matrix = new int[3, 3];
+
+        /// <summary>
+        /// true - крестики, false - нолики
+        /// </summary>
+        private bool _flagfigure = false;
+
+        /// <summary>
+        /// false - ходит робот, true - человек
+        /// </summary>
+        private bool _flagmove = true;
+
+        private List<Alternative> _alternativs = new List<Alternative>();
+        
+        private bool _flagClipping = false;
+
+        /// <summary>
+        /// Подсчет общего числа вызовов <Appraisal>.
+        /// </summary>
+        private long _numeric = 0;
         #endregion
 
-        #region Методы класса
+        #region Методы
 
         // прорисовка доски
         private Bitmap Field(PictureBox pictbox)
         {
-            bmap = new Bitmap(pictbox.Width, pictbox.Height);
-            gr = Graphics.FromImage(bmap);
-            gr.DrawLine(new Pen(Color.Black), 0, 100, 300, 100);
-            gr.DrawLine(new Pen(Color.Black), 0, 200, 300, 200);
-            gr.DrawLine(new Pen(Color.Black), 100, 0, 100, 300);
-            gr.DrawLine(new Pen(Color.Black), 200, 0, 200, 300);
+            _bmap = new Bitmap(pictbox.Width, pictbox.Height);
+            _graphics = Graphics.FromImage(_bmap);
+            _graphics.DrawLine(new Pen(Color.Black), 0, 100, 300, 100);
+            _graphics.DrawLine(new Pen(Color.Black), 0, 200, 300, 200);
+            _graphics.DrawLine(new Pen(Color.Black), 100, 0, 100, 300);
+            _graphics.DrawLine(new Pen(Color.Black), 200, 0, 200, 300);
 
-            return bmap;
+            return _bmap;
         }
 
         // прорисовка хода и его отображение в массиве
@@ -141,11 +157,14 @@ namespace Tic_tac_toe_game
             return 0;
         }
 
-        // метод оценки возможного хода
-        long numeric = 0; // подсчет общего числа вызовов <Appraisal>
+        /// <summary>
+        /// Метод оценки возможного хода.
+        /// </summary>
+        /// <param name="ShapeType"></param>
+        /// <returns></returns>
         private int Appraisal(bool ShapeType)
         {
-            numeric++; //тест
+            _numeric++; //тест
 
             int max = -1;
 
@@ -154,18 +173,18 @@ namespace Tic_tac_toe_game
 
             bool findmove = false; // свободных клеток нет
             // проверяем текущую позицию на проигрыш
-            if (GameEnd(Matrix, oppShapeType) == true)
+            if (GameEnd(_matrix, oppShapeType) == true)
                 return -1;
 
             // генерируем и оцениваем
             for (int i = 0; i < 3; i++)
                 for (int j = 0; j < 3; j++)
                 {
-                    if (Matrix[i, j] == 0)
+                    if (_matrix[i, j] == 0)
                     {
                         if (ShapeType)
-                            Matrix[i, j] = 2;
-                        else Matrix[i, j] = 1;
+                            _matrix[i, j] = 2;
+                        else _matrix[i, j] = 1;
 
                         findmove = true;
                         // вот она - рекурсия, оцениваем текущую позицию
@@ -177,8 +196,8 @@ namespace Tic_tac_toe_game
                         }
 
                         // востанавливаем позицию
-                        Matrix[i, j] = 0;
-                        if (flag_clipping == true && max == 1)
+                        _matrix[i, j] = 0;
+                        if (_flagClipping == true && max == 1)
                         {
                             max = 1;
                             break;
@@ -205,31 +224,34 @@ namespace Tic_tac_toe_game
 
         private void pictureBoxGameBoard_MouseDown(object sender, MouseEventArgs e)
         {
-            if (Matrix[ConvertToIndex(e.Y), ConvertToIndex(e.X)] > 0 || GameEnd(Matrix, flagfigure) == true
-                || GameEnd(Matrix, !flagfigure) == true)
-                return;
-            if (flagmove == false) // false это ход компьютера
+            if (_matrix[ConvertToIndex(e.Y), ConvertToIndex(e.X)] > 0 || 
+                GameEnd(_matrix, _flagfigure) == true || 
+                GameEnd(_matrix, !_flagfigure) == true)
                 return;
 
-            if (flagfigure) // true - крестики, false - нолики
-                Matrix[ConvertToIndex(e.Y), ConvertToIndex(e.X)] = 2;
+            if (_flagmove == false)
+                return;
+
+            if (_flagfigure)
+                _matrix[ConvertToIndex(e.Y), ConvertToIndex(e.X)] = 2;
             else
-                Matrix[ConvertToIndex(e.Y), ConvertToIndex(e.X)] = 1;
+                _matrix[ConvertToIndex(e.Y), ConvertToIndex(e.X)] = 1;
 
-            pictureBoxGameBoard.Image = PaintShape(gr, bmap, e.X, e.Y, flagfigure);
-            if (GameEnd(Matrix, true) == true)
+            pictureBoxGameBoard.Image = PaintShape(_graphics, _bmap, e.X, e.Y, _flagfigure);
+            if (GameEnd(_matrix, true) == true)
             {
                 MessageBox.Show("Крестики выиграли");
                 return;
             }
-            if (GameEnd(Matrix, false) == true)
+            if (GameEnd(_matrix, false) == true)
             {
                 MessageBox.Show("Нолики выиграли");
                 return;
             }
+
             #region Проверка на ничью
             bool Equality = true;
-            foreach (int n in Matrix)
+            foreach (int n in _matrix)
             {
                 if (n != 0)
                     Equality = false;
@@ -241,8 +263,8 @@ namespace Tic_tac_toe_game
             }
 
             #endregion
-            flagmove = !flagmove; // смена очереди хода
-            flagfigure = !flagfigure; // смена типа фигуры чья очередь хода
+            _flagmove = !_flagmove; // смена очереди хода
+            _flagfigure = !_flagfigure; // смена типа фигуры чья очередь хода
         }
 
         private void buttonArray_Click(object sender, EventArgs e)
@@ -250,52 +272,56 @@ namespace Tic_tac_toe_game
             Text = "";
             for (int i = 0; i < 3; i++)
                 for (int j = 0; j < 3; j++)
-                    Text += Matrix[i, j].ToString() + " -- ";
+                    Text += _matrix[i, j].ToString() + " -- ";
         }
 
         private void pictureBoxGameBoard_MouseUp(object sender, MouseEventArgs e)
         {
-            bool MatrixClear = true;
-            foreach (int n in Matrix)
+            bool matrixClear = true;
+            foreach (int n in _matrix)
             {
                 if (n != 0)
-                    MatrixClear = false;
+                    matrixClear = false;
             }
+
             // если доска чистая, то разрешаем компьютеру первой сделать ход
             bool flagRandom = false;
-            if (MatrixClear == true)
+            if (matrixClear == true)
             {
-                flagmove = false;
+                _flagmove = false;
                 flagRandom = true;
             }
 
             listBoxListOfRatings.Items.Clear();
-            numeric = 0; // тестовая переменнаяs
+            _numeric = 0; // тестовая переменнаяs
 
-
-            if (flagmove == true)
+            if (_flagmove == true)
                 return;
+
             Alternative alternative;
-            Alternativs.Clear();
+            _alternativs.Clear();
 
             #region Нополнение списка вохможных ходов c их оценкой
             for (int i = 0; i < 3; i++)
+            {
                 for (int j = 0; j < 3; j++)
                 {
-                    if (Matrix[i, j] == 0) // если поле пустое ставим значение 1 или 2
+                    if (_matrix[i, j] == 0) // если поле пустое ставим значение 1 или 2
                     {
-                        if (flagfigure)
-                            Matrix[i, j] = 2;
-                        else Matrix[i, j] = 1;
+                        if (_flagfigure)
+                            _matrix[i, j] = 2;
+                        else _matrix[i, j] = 1;
 
-                        alternative.appraisal = -Appraisal(!flagfigure);
-                        alternative.map = (int[,])Matrix.Clone();
-                        Alternativs.Add(alternative);
+                        alternative.appraisal = -Appraisal(!_flagfigure);
+                        alternative.map = (int[,])_matrix.Clone();
+                        _alternativs.Add(alternative);
 
-                        Matrix[i, j] = 0; // восстановление позиции
+                        _matrix[i, j] = 0; // восстановление позиции
                     }
                 }
-            if (Alternativs.Count == 0)
+            }
+
+            if (_alternativs.Count == 0)
             {
                 MessageBox.Show("Ничья!");
                 return;
@@ -303,23 +329,23 @@ namespace Tic_tac_toe_game
             #endregion
 
             #region Вывод списка возможных ходов на Листбокс
-            foreach (Alternative a in Alternativs)
+            foreach (Alternative a in _alternativs)
             {
                 listBoxListOfRatings.Items.Add((listBoxListOfRatings.Items.Count + 1).ToString() + ".  " + "Оценка: " + a.appraisal.ToString());
             }
 
             Text = "";
-            Text = "Дерево перебора: " + numeric;
+            Text = "Дерево перебора: " + _numeric;
             #endregion
 
             #region Выбор хода
             //выибираем лучший ход из списка вариантов
             int max = -1, id = 0;
-            for (int i = 0; i < Alternativs.Count; i++)
+            for (int i = 0; i < _alternativs.Count; i++)
             {
-                if (Alternativs[i].appraisal > max)
+                if (_alternativs[i].appraisal > max)
                 {
-                    max = Alternativs[i].appraisal;
+                    max = _alternativs[i].appraisal;
                     id = i;
                 }
             }
@@ -329,32 +355,32 @@ namespace Tic_tac_toe_game
             //делаем ход из варианта с индексом id
             if (flagRandom == false)
             {
-                Matrix = (int[,])Alternativs[id].map.Clone();
-                pictureBoxGameBoard.Image = PaintPosition(gr, bmap, Matrix);
+                _matrix = (int[,])_alternativs[id].map.Clone();
+                pictureBoxGameBoard.Image = PaintPosition(_graphics, _bmap, _matrix);
             }
             else
             {
-                Matrix = (int[,])Alternativs[RandomMove(Alternativs.Count)].map.Clone();
-                pictureBoxGameBoard.Image = PaintPosition(gr, bmap, Matrix);
+                _matrix = (int[,])_alternativs[RandomMove(_alternativs.Count)].map.Clone();
+                pictureBoxGameBoard.Image = PaintPosition(_graphics, _bmap, _matrix);
             }
 
+            _flagmove = !_flagmove; // передаем очередь хода
+            _flagfigure = !_flagfigure; // меняем тип фигуры
 
-            flagmove = !flagmove; // передаем очередь хода
-            flagfigure = !flagfigure; // меняем тип фигуры
-
-            if (GameEnd(Matrix, true) == true)
+            if (GameEnd(_matrix, true) == true)
             {
                 MessageBox.Show("Крестики выиграли");
                 return;
             }
-            if (GameEnd(Matrix, false) == true)
+            if (GameEnd(_matrix, false) == true)
             {
                 MessageBox.Show("Нолики выиграли");
                 return;
             }
+
             #region Проверка на ничью
             bool Equality = true;
-            foreach (int n in Matrix)
+            foreach (int n in _matrix)
             {
                 if (n == 0)
                     Equality = false;
@@ -364,115 +390,81 @@ namespace Tic_tac_toe_game
                 MessageBox.Show("Ничья!");
                 return;
             }
-
             #endregion
+
             #endregion
         }
 
         private void btnTestPosition_Click(object sender, EventArgs e)
         {
             listBoxListOfRatings.Items.Clear();
-            flagmove = false;
-            flagfigure = true;
+            _flagmove = false;
+            _flagfigure = true;
 
             // Оцениваем подготовленную тестовую позицию:
 
-            numeric = 0; // тестовая переменная
+            _numeric = 0; // тестовая переменная
 
             #region Оценка
-            if (flagmove == true)
+            if (_flagmove == true)
                 return;
             Alternative alternative;
-            Alternativs.Clear();
+            _alternativs.Clear();
 
             #region Нополнение списка вохможных ходов c их оценкой
             for (int i = 0; i < 3; i++)
                 for (int j = 0; j < 3; j++)
                 {
-                    if (Matrix[i, j] == 0) // если поле пустое ставим значение 1 или 2
+                    if (_matrix[i, j] == 0) // если поле пустое ставим значение 1 или 2
                     {
-                        if (flagfigure)
-                            Matrix[i, j] = 2;
-                        else Matrix[i, j] = 1;
+                        if (_flagfigure)
+                            _matrix[i, j] = 2;
+                        else _matrix[i, j] = 1;
 
-                        alternative.appraisal = -Appraisal(!flagfigure);
-                        alternative.map = (int[,])Matrix.Clone();
-                        Alternativs.Add(alternative);
+                        alternative.appraisal = -Appraisal(!_flagfigure);
+                        alternative.map = (int[,])_matrix.Clone();
+                        _alternativs.Add(alternative);
 
-                        Matrix[i, j] = 0; // восстановление позиции
+                        _matrix[i, j] = 0; // восстановление позиции
                     }
                 }
             #endregion
             #region Вывод списка возможных ходов на Листбокс
-            foreach (Alternative a in Alternativs)
+            foreach (Alternative a in _alternativs)
             {
                 listBoxListOfRatings.Items.Add((listBoxListOfRatings.Items.Count + 1).ToString() + ".  " + "Оценка: " + a.appraisal.ToString());
             }
 
             Text = "";
-            Text = "Число запусков Appraisal: " + numeric;
+            Text = "Число запусков Appraisal: " + _numeric;
             #endregion
 
             #endregion
 
-            #region Выбор хода
-            ////выибираем лучший ход из списка вариантов
-            //int max = -1, id = 0;
-            //for (int i = 0; i < Alternativs.Count; i++)
-            //{
-            //    if (Alternativs[i].appraisal > max)
-            //    {
-            //        max = Alternativs[i].appraisal;
-            //        id = i;
-            //    }
-            //}
-            #endregion
-            #region Ход
-            ////делаем лучший ход из списка вариантов
-            //Matrix = (int[,])Alternativs[id].map.Clone();
-            //pictureBox1.Image = PaintPosition(gr, bmap, Matrix);
-
-
-            //flagmove = !flagmove;
-            //flagfigure = !flagfigure;
-            //listBox1.Items.Add(numeric);
-
-            //if (GameEnd(Matrix, true) == true)
-            //{
-            //    MessageBox.Show("Крестики выиграли");
-            //    return;
-            //}
-            //if (GameEnd(Matrix, false) == true)
-            //{
-            //    MessageBox.Show("Нолики выиграли");
-            //    return;
-            //}
-            #endregion
-
-            flagmove = !flagmove;
-            flagfigure = !flagfigure;
+            _flagmove = !_flagmove;
+            _flagfigure = !_flagfigure;
         }
 
         private void btnNewGame_Click(object sender, EventArgs e)
         {
-            numeric = 0;
+            _numeric = 0;
             listBoxListOfRatings.Items.Clear();
 
-            Matrix = new int[3, 3];
+            _matrix = new int[3, 3];
             pictureBoxGameBoard.Image = Field(pictureBoxGameBoard);
 
-            flagfigure = false;
-            flagmove = true;
+            _flagfigure = false;
+            _flagmove = true;
         }
 
         private void MainForm_Click(object sender, EventArgs e)
         {
-            flagfigure = !flagfigure;
+            _flagfigure = !_flagfigure;
         }
 
         private void checkBoxCuttingOffBranches_CheckStateChanged(object sender, EventArgs e)
         {
-            flag_clipping = checkBoxCuttingOffBranches.Checked;
+            _flagClipping = checkBoxCuttingOffBranches.Checked;
         }
 
     }

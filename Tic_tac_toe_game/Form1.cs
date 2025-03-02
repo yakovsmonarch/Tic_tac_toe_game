@@ -479,9 +479,5 @@ namespace Tic_tac_toe_game
             flag_clipping = checkBox1.Checked;
         }
 
-        private void button2_Click(object sender, EventArgs e)
-        {
-
-        }
     }
 }

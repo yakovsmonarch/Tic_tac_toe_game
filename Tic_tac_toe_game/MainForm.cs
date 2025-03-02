@@ -47,7 +47,11 @@ namespace Tic_tac_toe_game
 
         #region Методы
 
-        // прорисовка доски
+        /// <summary>
+        /// Прорисовка доски.
+        /// </summary>
+        /// <param name="pictbox"></param>
+        /// <returns></returns>
         private Bitmap Field(PictureBox pictbox)
         {
             _bmap = new Bitmap(pictbox.Width, pictbox.Height);
@@ -60,7 +64,15 @@ namespace Tic_tac_toe_game
             return _bmap;
         }
 
-        // прорисовка хода и его отображение в массиве
+        /// <summary>
+        /// Прорисовка хода и его отображение в массиве.
+        /// </summary>
+        /// <param name="gr"></param>
+        /// <param name="bmappar"></param>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="typeshape"></param>
+        /// <returns></returns>
         private Bitmap PaintShape(Graphics gr, Bitmap bmappar, int x, int y, bool typeshape = true)
         {
             gr = Graphics.FromImage(bmappar);
@@ -80,7 +92,13 @@ namespace Tic_tac_toe_game
             }
         }
 
-        // прорисовка позиции
+        /// <summary>
+        /// Прорисовка позиции.
+        /// </summary>
+        /// <param name="gr"></param>
+        /// <param name="bmappar"></param>
+        /// <param name="map"></param>
+        /// <returns></returns>
         private Bitmap PaintPosition(Graphics gr, Bitmap bmappar, int[,] map)
         {
             bmappar = Field(pictureBoxGameBoard);
@@ -105,7 +123,12 @@ namespace Tic_tac_toe_game
             return n / 100;
         }
 
-        // определение выигранной позиции
+        /// <summary>
+        /// Определение выигранной позиции.
+        /// </summary>
+        /// <param name="map"></param>
+        /// <param name="ShapeType"></param>
+        /// <returns></returns>
         private bool GameEnd(int[,] map, bool ShapeType)
         {
             if (ShapeType) // искать за крестик
@@ -140,7 +163,12 @@ namespace Tic_tac_toe_game
             }
         }
 
-        // оценка конеченой позиции: виграно 1, ничья 0, поражение -1
+        /// <summary>
+        /// Оценка конеченой позиции: виграно 1, ничья 0, поражение -1.
+        /// </summary>
+        /// <param name="map"></param>
+        /// <param name="ShapeType"></param>
+        /// <returns></returns>
         private int ValuePositioin(int[,] map, bool ShapeType)
         {
             if (ShapeType)
@@ -210,7 +238,11 @@ namespace Tic_tac_toe_game
             return max;
         }
 
-        // случайный ход из начальной позиции
+        /// <summary>
+        /// Случайный ход из начальной позиции.
+        /// </summary>
+        /// <param name="endindex"></param>
+        /// <returns></returns>
         private int RandomMove(int endindex)
         {
             return new Random().Next(0, endindex);

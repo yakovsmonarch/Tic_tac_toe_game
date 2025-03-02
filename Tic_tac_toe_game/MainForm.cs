@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Windows.Forms;
-using TicTacToeLib;
 using Tic_tac_toe_game.Model;
 
 namespace Tic_tac_toe_game
@@ -71,13 +70,13 @@ namespace Tic_tac_toe_game
         /// <param name="bmappar"></param>
         /// <param name="x"></param>
         /// <param name="y"></param>
-        /// <param name="typeshape"></param>
+        /// <param name="typeshape">крестик = true; нолик = false</param>
         /// <returns></returns>
         private Bitmap PaintShape(Graphics gr, Bitmap bmappar, int x, int y, bool typeshape = true)
         {
             gr = Graphics.FromImage(bmappar);
             int xp = ConvertToCoordinate(x), yp = ConvertToCoordinate(y);
-            if (!typeshape) // крестик = true; нолик = false
+            if (!typeshape)
             {
                 //map[ConvertToIndex(y), ConvertToIndex(x)] = 1;
                 gr.DrawEllipse(new Pen(Color.Black), new Rectangle(xp, yp, 50, 50));

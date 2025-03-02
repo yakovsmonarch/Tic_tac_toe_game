@@ -6,9 +6,9 @@ using TicTacToeLib;
 
 namespace Tic_tac_toe_game
 {
-    public partial class Form1 : Form
+    public partial class MainForm : Form
     {
-        public Form1()
+        public MainForm()
         {
             InitializeComponent();
         }
@@ -67,7 +67,7 @@ namespace Tic_tac_toe_game
         // прорисовка позиции
         private Bitmap PaintPosition(Graphics gr, Bitmap bmappar, int[,] map)
         {
-            bmappar = Field(pictureBox1);
+            bmappar = Field(pictureBoxGameBoard);
             for (int i = 0; i < 3; i++)
                 for (int j = 0; j < 3; j++)
                 {
@@ -198,12 +198,12 @@ namespace Tic_tac_toe_game
         }
         #endregion
 
-        private void Form1_Load(object sender, EventArgs e)
+        private void MainForm_Load(object sender, EventArgs e)
         {
-            pictureBox1.Image = Field(pictureBox1);
+            pictureBoxGameBoard.Image = Field(pictureBoxGameBoard);
         }
 
-        private void pictureBox1_MouseDown(object sender, MouseEventArgs e)
+        private void pictureBoxGameBoard_MouseDown(object sender, MouseEventArgs e)
         {
             if (Matrix[ConvertToIndex(e.Y), ConvertToIndex(e.X)] > 0 || GameEnd(Matrix, flagfigure) == true
                 || GameEnd(Matrix, !flagfigure) == true)
@@ -216,7 +216,7 @@ namespace Tic_tac_toe_game
             else
                 Matrix[ConvertToIndex(e.Y), ConvertToIndex(e.X)] = 1;
 
-            pictureBox1.Image = PaintShape(gr, bmap, e.X, e.Y, flagfigure);
+            pictureBoxGameBoard.Image = PaintShape(gr, bmap, e.X, e.Y, flagfigure);
             if (GameEnd(Matrix, true) == true)
             {
                 MessageBox.Show("Крестики выиграли");
@@ -245,7 +245,7 @@ namespace Tic_tac_toe_game
             flagfigure = !flagfigure; // смена типа фигуры чья очередь хода
         }
 
-        private void button1_Click(object sender, EventArgs e)
+        private void buttonArray_Click(object sender, EventArgs e)
         {
             Text = "";
             for (int i = 0; i < 3; i++)
@@ -253,7 +253,7 @@ namespace Tic_tac_toe_game
                     Text += Matrix[i, j].ToString() + " -- ";
         }
 
-        private void pictureBox1_MouseUp(object sender, MouseEventArgs e)
+        private void pictureBoxGameBoard_MouseUp(object sender, MouseEventArgs e)
         {
             bool MatrixClear = true;
             foreach (int n in Matrix)
@@ -269,7 +269,7 @@ namespace Tic_tac_toe_game
                 flagRandom = true;
             }
 
-            listBox1.Items.Clear();
+            listBoxListOfRatings.Items.Clear();
             numeric = 0; // тестовая переменнаяs
 
 
@@ -305,7 +305,7 @@ namespace Tic_tac_toe_game
             #region Вывод списка возможных ходов на Листбокс
             foreach (Alternative a in Alternativs)
             {
-                listBox1.Items.Add((listBox1.Items.Count + 1).ToString() + ".  " + "Оценка: " + a.appraisal.ToString());
+                listBoxListOfRatings.Items.Add((listBoxListOfRatings.Items.Count + 1).ToString() + ".  " + "Оценка: " + a.appraisal.ToString());
             }
 
             Text = "";
@@ -330,12 +330,12 @@ namespace Tic_tac_toe_game
             if (flagRandom == false)
             {
                 Matrix = (int[,])Alternativs[id].map.Clone();
-                pictureBox1.Image = PaintPosition(gr, bmap, Matrix);
+                pictureBoxGameBoard.Image = PaintPosition(gr, bmap, Matrix);
             }
             else
             {
                 Matrix = (int[,])Alternativs[RandomMove(Alternativs.Count)].map.Clone();
-                pictureBox1.Image = PaintPosition(gr, bmap, Matrix);
+                pictureBoxGameBoard.Image = PaintPosition(gr, bmap, Matrix);
             }
 
 
@@ -369,9 +369,9 @@ namespace Tic_tac_toe_game
             #endregion
         }
 
-        private void button3_Click(object sender, EventArgs e)
+        private void btnTestPosition_Click(object sender, EventArgs e)
         {
-            listBox1.Items.Clear();
+            listBoxListOfRatings.Items.Clear();
             flagmove = false;
             flagfigure = true;
 
@@ -406,7 +406,7 @@ namespace Tic_tac_toe_game
             #region Вывод списка возможных ходов на Листбокс
             foreach (Alternative a in Alternativs)
             {
-                listBox1.Items.Add((listBox1.Items.Count + 1).ToString() + ".  " + "Оценка: " + a.appraisal.ToString());
+                listBoxListOfRatings.Items.Add((listBoxListOfRatings.Items.Count + 1).ToString() + ".  " + "Оценка: " + a.appraisal.ToString());
             }
 
             Text = "";
@@ -453,26 +453,26 @@ namespace Tic_tac_toe_game
             flagfigure = !flagfigure;
         }
 
-        private void button4_Click(object sender, EventArgs e)
+        private void btnNewGame_Click(object sender, EventArgs e)
         {
             numeric = 0;
-            listBox1.Items.Clear();
+            listBoxListOfRatings.Items.Clear();
 
             Matrix = new int[3, 3];
-            pictureBox1.Image = Field(pictureBox1);
+            pictureBoxGameBoard.Image = Field(pictureBoxGameBoard);
 
             flagfigure = false;
             flagmove = true;
         }
 
-        private void Form1_Click(object sender, EventArgs e)
+        private void MainForm_Click(object sender, EventArgs e)
         {
             flagfigure = !flagfigure;
         }
 
-        private void checkBox1_CheckStateChanged(object sender, EventArgs e)
+        private void checkBoxCuttingOffBranches_CheckStateChanged(object sender, EventArgs e)
         {
-            flag_clipping = checkBox1.Checked;
+            flag_clipping = checkBoxCuttingOffBranches.Checked;
         }
 
     }

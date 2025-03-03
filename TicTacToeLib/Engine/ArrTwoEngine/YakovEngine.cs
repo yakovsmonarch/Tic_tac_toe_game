@@ -1,15 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using TicTacToeLib.Base;
 using TicTacToeLib.Enums;
 using TicTacToeLib.Model;
 
 namespace TicTacToeLib.Engine.ArrTwoEngine
 {
-    public class ArrEngine : BaseEngine
+    public class YakovEngine : BaseEngine
     {
-        public ArrEngine(string fenttt, Level level) : base(fenttt, level)
+        public YakovEngine(string fenttt, Level level) : base(fenttt, level)
         {
-
+            _matrix = ParseFenTTT(fenttt);
         }
 
         public override (string position, ResultGame resultGame) Move(string fenttt)
@@ -18,9 +19,59 @@ namespace TicTacToeLib.Engine.ArrTwoEngine
         }
 
         /// <summary>
+        /// Клон массива для тестов.
+        /// </summary>
+        /// <returns></returns>
+        public int[,] CloneArrPos()
+        {
+            return (int[,])_matrix.Clone();
+        }
+
+        /// <summary>
+        /// Инициализация позиции.
+        /// </summary>
+        /// <param name="fenttt">Строка в формате fenttt.</param>
+        private int[,] ParseFenTTT(string fenttt)
+        {
+            int[,] result = new int[3,3];
+            string[] arr = fenttt.Split();
+            string[] posLines = arr[0].Split(new char[]{'/'}, StringSplitOptions.RemoveEmptyEntries);
+            
+            for (int row = 0; row < 3; row++)
+            {
+                for(int col = 0; col < posLines.Length; col++)
+                {
+                    
+                    string shape = posLines[col].ToLower();
+                    switch (shape)
+                    {
+                        case "c":
+                            result[row, col] = 2;
+                            break;
+                        case "z":
+                            result[row, col] = 1;
+                            break;
+
+                        default:
+                            if (int.TryParse(shape, out int namberFieldEmpty))
+                            {
+                                for (int pos = col; pos < namberFieldEmpty; namberFieldEmpty++)
+                                {
+                                    result[row, pos] = 0;
+                                }
+                            }
+                            break;
+                    }
+                }
+            }
+
+            return result;
+        }
+
+        /// <summary>
         /// Массив содержащий позицию.
         /// </summary>
-        private int[,] _matrix = new int[3, 3];
+        private readonly int[,] _matrix;
 
         /// <summary>
         /// true - крестики, false - нолики

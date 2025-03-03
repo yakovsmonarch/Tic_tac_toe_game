@@ -1,11 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35707.178 d17.12
+VisualStudioVersion = 17.12.35707.178
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tic_tac_toe_game", "Tic_tac_toe_game\Tic_tac_toe_game.csproj", "{2D2FE5D3-3BFC-4092-A135-5918755A608B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicTacToeLib", "TicTacToeLib\TicTacToeLib.csproj", "{198F6DDE-5B82-43B5-B0CD-C37013208FCB}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Testing", "Testing\Testing.csproj", "{A3B03E51-BEA7-4BB1-90E1-FDCA45664B90}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{198F6DDE-5B82-43B5-B0CD-C37013208FCB}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{198F6DDE-5B82-43B5-B0CD-C37013208FCB}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{198F6DDE-5B82-43B5-B0CD-C37013208FCB}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A3B03E51-BEA7-4BB1-90E1-FDCA45664B90}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A3B03E51-BEA7-4BB1-90E1-FDCA45664B90}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A3B03E51-BEA7-4BB1-90E1-FDCA45664B90}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A3B03E51-BEA7-4BB1-90E1-FDCA45664B90}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

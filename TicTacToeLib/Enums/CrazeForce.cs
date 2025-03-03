@@ -1,9 +1,9 @@
-﻿namespace TicTacToeLib.Enums
+﻿namespace CRAZELib.Enums
 {
     /// <summary>
     /// Уровни силы игры движка.
     /// </summary>
-    public enum Level
+    public enum CrazeForce
     {
         /// <summary>
         /// Сильнейший уровень.

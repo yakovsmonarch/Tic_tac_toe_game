@@ -1,4 +1,4 @@
-﻿namespace TicTacToeLib.Enums
+﻿namespace CRAZELib.Enums
 {
     /// <summary>
     /// Результат после хода.

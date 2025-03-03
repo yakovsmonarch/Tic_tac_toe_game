@@ -1,4 +1,4 @@
-﻿namespace TicTacToeLib.Model
+﻿namespace CRAZELib.Model
 {
     public struct Alternative
     {

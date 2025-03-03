@@ -5,7 +5,7 @@ VisualStudioVersion = 17.12.35707.178
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tic_tac_toe_game", "Tic_tac_toe_game\Tic_tac_toe_game.csproj", "{2D2FE5D3-3BFC-4092-A135-5918755A608B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TicTacToeLib", "TicTacToeLib\TicTacToeLib.csproj", "{198F6DDE-5B82-43B5-B0CD-C37013208FCB}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CRAZELib", "TicTacToeLib\CRAZELib.csproj", "{198F6DDE-5B82-43B5-B0CD-C37013208FCB}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Testing", "Testing\Testing.csproj", "{A3B03E51-BEA7-4BB1-90E1-FDCA45664B90}"
 EndProject

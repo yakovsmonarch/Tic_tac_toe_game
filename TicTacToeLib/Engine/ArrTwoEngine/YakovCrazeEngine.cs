@@ -1,19 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using TicTacToeLib.Base;
-using TicTacToeLib.Enums;
-using TicTacToeLib.Model;
+using CRAZELib.Base;
+using CRAZELib.Enums;
+using CRAZELib.Model;
 
-namespace TicTacToeLib.Engine.ArrTwoEngine
+namespace CRAZELib.Engine.ArrTwoEngine
 {
-    public class YakovEngine : BaseEngine
+    public class YakovCrazeEngine : BaseCrazeEngine
     {
-        public YakovEngine(string fenttt, Level level) : base(fenttt, level)
+        public YakovCrazeEngine(string czn, CrazeForce force) : base(czn, force)
         {
-            (_matrix, _startMove, _numberStartMove) = ParseFenTTT(fenttt);
+            (_matrix, _startMove, _numberStartMove) = ParseCZN(czn);
         }
 
-        public override (string position, ResultGame resultGame) Move(string fenttt)
+        public override (string position, ResultGame resultGame) Move(string czn)
         {
             throw new System.NotImplementedException();
         }
@@ -157,11 +157,11 @@ namespace TicTacToeLib.Engine.ArrTwoEngine
         /// <summary>
         /// Инициализация позиции.
         /// </summary>
-        /// <param name="fenttt">Строка в формате fenttt.</param>
-        private (int[,] position, char startMove, int numberStartMove) ParseFenTTT(string fenttt)
+        /// <param name="czn">Строка в формате fenttt.</param>
+        private (int[,] position, char startMove, int numberStartMove) ParseCZN(string czn)
         {
             int[,] result = new int[3, 3];
-            string[] arr = fenttt.Split();
+            string[] arr = czn.Split();
 
             string[] posLines = arr[0].Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
             char currentMove = arr[1][0];

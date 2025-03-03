@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
@@ -21,6 +21,8 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <DocumentationFile>
+    </DocumentationFile>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -41,9 +43,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Base\BaseEngine.cs" />
-    <Compile Include="Engine\ArrTwoEngine\YakovEngine.cs" />
-    <Compile Include="Enums\Level.cs" />
+    <Compile Include="Base\BaseCrazeEngine.cs" />
+    <Compile Include="Engine\ArrTwoEngine\YakovCrazeEngine.cs" />
+    <Compile Include="Enums\CrazeForce.cs" />
     <Compile Include="Enums\ResultGame.cs" />
     <Compile Include="Model\Alternative.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

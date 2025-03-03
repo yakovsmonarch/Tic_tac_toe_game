@@ -23,7 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TicTacToeLib\TicTacToeLib.csproj" />
+    <ProjectReference Include="..\TicTacToeLib\CRAZELib.csproj" />
   </ItemGroup>
 
   <ItemGroup>

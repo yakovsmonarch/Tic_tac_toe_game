@@ -10,7 +10,7 @@ namespace TicTacToeLib.Engine.ArrTwoEngine
     {
         public YakovEngine(string fenttt, Level level) : base(fenttt, level)
         {
-            _matrix = ParseFenTTT(fenttt);
+            (_matrix, _startMove, _numberStartMove) = ParseFenTTT(fenttt);
         }
 
         public override (string position, ResultGame resultGame) Move(string fenttt)
@@ -19,55 +19,22 @@ namespace TicTacToeLib.Engine.ArrTwoEngine
         }
 
         /// <summary>
+        /// Номер ходя в стартововой позиции.
+        /// </summary>
+        private readonly int _numberStartMove;
+
+        /// <summary>
+        /// Чей ход был в стартовой позиции.
+        /// </summary>
+        private readonly char _startMove;
+
+        /// <summary>
         /// Клон массива для тестов.
         /// </summary>
         /// <returns></returns>
         public int[,] CloneArrPos()
         {
             return (int[,])_matrix.Clone();
-        }
-
-        /// <summary>
-        /// Инициализация позиции.
-        /// </summary>
-        /// <param name="fenttt">Строка в формате fenttt.</param>
-        private int[,] ParseFenTTT(string fenttt)
-        {
-            int[,] result = new int[3,3];
-            string[] arr = fenttt.Split();
-            string[] posLines = arr[0].Split(new char[]{'/'}, StringSplitOptions.RemoveEmptyEntries);
-            
-            for (int row = 0; row < 3; row++)
-            {
-                char[] shapes = posLines[row].ToLower().ToCharArray();
-                for (int col = 0; col < shapes.Length; col++)
-                {
-                    if (int.TryParse(shapes[col].ToString(), out int namberFieldEmpty))
-                    {
-                        for (int pos = col; pos < namberFieldEmpty; namberFieldEmpty++)
-                        {
-                            result[row, pos] = 0;
-                        }
-                        continue;
-                    }
-
-                    if (shapes[col] == 'c')
-                    {
-                        result[row, col] = 2;
-                    }
-                    else if (shapes[col] == 'z')
-                    {
-                        result[row, col] = 1;
-                    }
-                    else
-                    {
-                        throw new NotImplementedException($"Не найдено сотояние поля '{shapes[col]}'.");
-                    }
-
-                }
-            }
-
-            return result;
         }
 
         /// <summary>
@@ -185,6 +152,55 @@ namespace TicTacToeLib.Engine.ArrTwoEngine
                 return 0;
 
             return max;
+        }
+
+        /// <summary>
+        /// Инициализация позиции.
+        /// </summary>
+        /// <param name="fenttt">Строка в формате fenttt.</param>
+        private (int[,] position, char startMove, int numberStartMove) ParseFenTTT(string fenttt)
+        {
+            int[,] result = new int[3, 3];
+            string[] arr = fenttt.Split();
+
+            string[] posLines = arr[0].Split(new char[] { '/' }, StringSplitOptions.RemoveEmptyEntries);
+            char currentMove = arr[1][0];
+            int counterMove = int.TryParse(arr[2], out int outCounterMove) ?
+                outCounterMove :
+                throw new Exception($"Не удалось получить номер хода из строки '{arr[2]}'.");
+
+
+            for (int row = 0; row < 3; row++)
+            {
+                char[] shapes = posLines[row].ToLower().ToCharArray();
+                for (int col = 0; col < shapes.Length; col++)
+                {
+                    if (int.TryParse(shapes[col].ToString(), out int namberFieldEmpty))
+                    {
+                        for (int pos = col; pos < namberFieldEmpty; namberFieldEmpty++)
+                        {
+                            result[row, pos] = 0;
+                        }
+                        continue;
+                    }
+
+                    if (shapes[col] == 'c')
+                    {
+                        result[row, col] = 2;
+                    }
+                    else if (shapes[col] == 'z')
+                    {
+                        result[row, col] = 1;
+                    }
+                    else
+                    {
+                        throw new NotImplementedException($"Не найдено сотояние поля '{shapes[col]}'.");
+                    }
+
+                }
+            }
+
+            return (result, currentMove, counterMove);
         }
 
     }

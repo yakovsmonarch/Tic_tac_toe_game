@@ -39,29 +39,31 @@ namespace TicTacToeLib.Engine.ArrTwoEngine
             
             for (int row = 0; row < 3; row++)
             {
-                for(int col = 0; col < posLines.Length; col++)
+                char[] shapes = posLines[row].ToLower().ToCharArray();
+                for (int col = 0; col < shapes.Length; col++)
                 {
-                    
-                    string shape = posLines[col].ToLower();
-                    switch (shape)
+                    if (int.TryParse(shapes[col].ToString(), out int namberFieldEmpty))
                     {
-                        case "c":
-                            result[row, col] = 2;
-                            break;
-                        case "z":
-                            result[row, col] = 1;
-                            break;
-
-                        default:
-                            if (int.TryParse(shape, out int namberFieldEmpty))
-                            {
-                                for (int pos = col; pos < namberFieldEmpty; namberFieldEmpty++)
-                                {
-                                    result[row, pos] = 0;
-                                }
-                            }
-                            break;
+                        for (int pos = col; pos < namberFieldEmpty; namberFieldEmpty++)
+                        {
+                            result[row, pos] = 0;
+                        }
+                        continue;
                     }
+
+                    if (shapes[col] == 'c')
+                    {
+                        result[row, col] = 2;
+                    }
+                    else if (shapes[col] == 'z')
+                    {
+                        result[row, col] = 1;
+                    }
+                    else
+                    {
+                        throw new NotImplementedException($"Не найдено сотояние поля '{shapes[col]}'.");
+                    }
+
                 }
             }
 

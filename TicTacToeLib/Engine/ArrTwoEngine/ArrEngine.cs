@@ -1,11 +1,21 @@
 ﻿using System.Collections.Generic;
+using TicTacToeLib.Base;
+using TicTacToeLib.Enums;
 using TicTacToeLib.Model;
 
-namespace TicTacToeLib
+namespace TicTacToeLib.Engine.ArrTwoEngine
 {
-    public class Game
+    public class ArrEngine : BaseEngine
     {
-        public Game() { }
+        public ArrEngine(string fenttt, Level level) : base(fenttt, level)
+        {
+
+        }
+
+        public override (string position, ResultGame resultGame) Move(string fenttt)
+        {
+            throw new System.NotImplementedException();
+        }
 
         /// <summary>
         /// Массив содержащий позицию.
@@ -123,5 +133,6 @@ namespace TicTacToeLib
 
             return max;
         }
+
     }
 }

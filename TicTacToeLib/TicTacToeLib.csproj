@@ -41,7 +41,10 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Game.cs" />
+    <Compile Include="Base\BaseEngine.cs" />
+    <Compile Include="Engine\ArrTwoEngine\ArrEngine.cs" />
+    <Compile Include="Enums\Level.cs" />
+    <Compile Include="Enums\ResultGame.cs" />
     <Compile Include="Model\Alternative.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
